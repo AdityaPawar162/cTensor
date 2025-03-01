@@ -8,7 +8,7 @@
 typedef struct optim_sgd {
     int n_params;
     Tensor* params;
-    
+
     float lr;
     float momentum;
 
@@ -29,11 +29,11 @@ void optim_sgd_config(optim_sgd* self, float lr, float momentum) {
     self->momentum = momentum;
 }
 
-void optim_sgd_zerograd(optim_sgd *self){
+void optim_sgd_zerograd(optim_sgd* self) {
     for(int i = 0; i < self->n_params; i++) {
         Tensor t = self->params[i];
-        if(t.node != NULL && t.node->grad.data != NULL) {
-            Tensor_delete(t.node->grad);
+        if(t.node != NULL) {
+            if(t.node->grad.data != NULL) { Tensor_delete(t.node->grad); }
             t.node->grad = Tensor_zeros(t.shape, false);
         }
     }
